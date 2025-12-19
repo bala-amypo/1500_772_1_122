@@ -1,51 +1,78 @@
 package com.example.demo.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.CampaignEntity;
+import com.example.demo.entity.Campaign;
 import com.example.demo.repository.CampaignRepository;
 import com.example.demo.service.CampaignService;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
 
-    @Autowired
-    private CampaignRepository campaignRepository;
+    private final CampaignRepository campaignRepository;
+
+    // REQUIRED constructor (tests depend on this)
+    public CampaignServiceImpl(CampaignRepository campaignRepository) {
+        this.campaignRepository = campaignRepository;
+    }
 
     @Override
-    public CampaignEntity addCampaign(CampaignEntity campaign) {
+    public Campaign createCampaign(Campaign campaign) {
+
+        if (campaign.getStartDate() != null && campaign.getEndDate() != null) {
+            if (campaign.getStartDate().after(campaign.getEndDate())) {
+                throw new RuntimeException("Invalid date range");
+            }
+        }
+
+        if (campaign.getBudget() == null ||
+                campaign.getBudget().compareTo(BigDecimal.ZERO) < 0) {
+            throw new RuntimeException("Budget must be non-negative");
+        }
+
         return campaignRepository.save(campaign);
     }
 
     @Override
-    public List<CampaignEntity> getAllCampaigns() {
+    public Campaign updateCampaign(Long id, Campaign campaign) {
+
+        Campaign existing = campaignRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Campaign not found"));
+
+        if (campaign.getStartDate() != null && campaign.getEndDate() != null) {
+            if (campaign.getStartDate().after(campaign.getEndDate())) {
+                throw new RuntimeException("Invalid date");
+            }
+        }
+
+        existing.setCampaignName(campaign.getCampaignName());
+        existing.setStartDate(campaign.getStartDate());
+        existing.setEndDate(campaign.getEndDate());
+        existing.setBudget(campaign.getBudget());
+
+        return campaignRepository.save(existing);
+    }
+
+    @Override
+    public Campaign getCampaignById(Long id) {
+        return campaignRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Campaign not found"));
+    }
+
+    @Override
+    public List<Campaign> getAllCampaigns() {
         return campaignRepository.findAll();
     }
 
     @Override
-    public CampaignEntity getCampaignById(Long id) {
-        return campaignRepository.findById(id).orElse(null);
-    }
+    public void deactivateCampaign(Long id) {
+        Campaign campaign = campaignRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Campaign not found"));
 
-    @Override
-    public CampaignEntity updateCampaign(Long id, CampaignEntity campaign) {
-        CampaignEntity existing = campaignRepository.findById(id).orElse(null);
-        if (existing != null) {
-            existing.setCampaignName(campaign.getCampaignName());
-            existing.setBrand(campaign.getBrand());
-            existing.setBudget(campaign.getBudget());
-            existing.setStartDate(campaign.getStartDate());
-            existing.setEndDate(campaign.getEndDate());
-            return campaignRepository.save(existing);
-        }
-        return null;
-    }
-
-    @Override
-    public void deleteCampaign(Long id) {
-        campaignRepository.deleteById(id);
+        campaign.setActive(false);
+        campaignRepository.save(campaign);
     }
 }

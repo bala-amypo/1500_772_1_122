@@ -1,17 +1,17 @@
 package com.example.demo.service;
 
 import java.util.List;
-import com.example.demo.entity.CampaignEntity;
+import com.example.demo.entity.Campaign;
 
 public interface CampaignService {
 
-    CampaignEntity addCampaign(CampaignEntity campaign);
+    Campaign createCampaign(Campaign campaign);
 
-    List<CampaignEntity> getAllCampaigns();
+    Campaign updateCampaign(Long id, Campaign campaign);
 
-    CampaignEntity getCampaignById(Long id);
+    Campaign getCampaignById(Long id);
 
-    CampaignEntity updateCampaign(Long id, CampaignEntity campaign);
+    List<Campaign> getAllCampaigns();
 
-    void deleteCampaign(Long id);
+    void deactivateCampaign(Long id);
 }
