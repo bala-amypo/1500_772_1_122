@@ -1,13 +1,12 @@
 package com.example.demo.entity;
 
-
 import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(
-        name = "influencers",
-        uniqueConstraints = @UniqueConstraint(columnNames = "socialHandle")
+    name = "influencers",
+    uniqueConstraints = @UniqueConstraint(columnNames = "socialHandle")
 )
 public class Influencer {
 
@@ -17,64 +16,38 @@ public class Influencer {
 
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String socialHandle;
 
     private String email;
 
-    private Boolean active;
+    private Boolean active = true;
 
     private Timestamp createdAt;
 
     @PrePersist
-    protected void onCreate() {
+    public void onCreate() {
         this.createdAt = new Timestamp(System.currentTimeMillis());
-        this.active = true;
+        if (this.active == null) {
+            this.active = true;
+        }
     }
 
-    // ===== Getters & Setters =====
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getSocialHandle() { return socialHandle; }
+    public void setSocialHandle(String socialHandle) { this.socialHandle = socialHandle; }
 
-    public String getName() {
-        return name;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 
-    public String getSocialHandle() {
-        return socialHandle;
-    }
-
-    public void setSocialHandle(String socialHandle) {
-        this.socialHandle = socialHandle;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
+    public Timestamp getCreatedAt() { return createdAt; }
 }
