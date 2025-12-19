@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.Influencer;
+import com.example.demo.entity.Influencer;
 import com.example.demo.repository.InfluencerRepository;
 import com.example.demo.service.InfluencerService;
 import org.springframework.stereotype.Service;
@@ -12,30 +12,26 @@ public class InfluencerServiceImpl implements InfluencerService {
 
     private final InfluencerRepository influencerRepository;
 
+    // 🔴 Constructor Injection (MANDATORY)
     public InfluencerServiceImpl(InfluencerRepository influencerRepository) {
         this.influencerRepository = influencerRepository;
     }
 
     @Override
     public Influencer createInfluencer(Influencer influencer) {
-        Influencer existing =
-                influencerRepository.findBySocialHandle(influencer.getSocialHandle());
-
-        if (existing != null) {
-            throw new RuntimeException("Influencer already exists");
-        }
+        influencerRepository.findBySocialHandle(influencer.getSocialHandle())
+                .ifPresent(i -> {
+                    throw new RuntimeException("Influencer already exists");
+                });
         return influencerRepository.save(influencer);
     }
 
     @Override
     public Influencer updateInfluencer(Long id, Influencer influencer) {
-        Influencer existing = influencerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Influencer not found"));
-
+        Influencer existing = getInfluencerById(id);
         existing.setName(influencer.getName());
         existing.setEmail(influencer.getEmail());
         existing.setSocialHandle(influencer.getSocialHandle());
-
         return influencerRepository.save(existing);
     }
 
@@ -52,9 +48,7 @@ public class InfluencerServiceImpl implements InfluencerService {
 
     @Override
     public void deactivateInfluencer(Long id) {
-        Influencer influencer = influencerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Influencer not found"));
-
+        Influencer influencer = getInfluencerById(id);
         influencer.setActive(false);
         influencerRepository.save(influencer);
     }
