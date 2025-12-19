@@ -2,53 +2,44 @@ package com.example.demo.controller;
 
 import com.example.demo.model.DiscountCode;
 import com.example.demo.service.DiscountCodeService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/discountcodes")
-@Tag(name = "Discount Codes", description = "APIs for managing discount codes linked to influencers and campaigns")
+@RequestMapping("/discount-codes")
 public class DiscountCodeController {
 
-    @Autowired
-    private DiscountCodeService discountCodeService;
+    private final DiscountCodeService discountCodeService;
 
-    @Operation(summary = "Get all discount codes")
+    public DiscountCodeController(DiscountCodeService discountCodeService) {
+        this.discountCodeService = discountCodeService;
+    }
+
     @GetMapping
-    public ResponseEntity<List<DiscountCode>> getAllDiscountCodes() {
-        List<DiscountCode> discountCodes = discountCodeService.getAllDiscountCodes();
-        return ResponseEntity.ok(discountCodes);
+    public List<DiscountCode> getAllDiscountCodes() {
+        return discountCodeService.getAllDiscountCodes();
     }
 
-    @Operation(summary = "Get a discount code by ID")
     @GetMapping("/{id}")
-    public ResponseEntity<DiscountCode> getDiscountCodeById(@PathVariable Long id) {
-        return ResponseEntity.ok(discountCodeService.getDiscountCodeById(id));
+    public DiscountCode getDiscountCodeById(@PathVariable Long id) {
+        // Unwrap Optional
+        return discountCodeService.getDiscountCodeById(id)
+                .orElseThrow(() -> new RuntimeException("DiscountCode not found"));
     }
 
-    @Operation(summary = "Create a new discount code")
     @PostMapping
-    public ResponseEntity<DiscountCode> createDiscountCode(@RequestBody DiscountCode discountCode) {
-        DiscountCode created = discountCodeService.createDiscountCode(discountCode);
-        return ResponseEntity.ok(created);
+    public DiscountCode createDiscountCode(@RequestBody DiscountCode discountCode) {
+        return discountCodeService.createDiscountCode(discountCode);
     }
 
-    @Operation(summary = "Update an existing discount code")
     @PutMapping("/{id}")
-    public ResponseEntity<DiscountCode> updateDiscountCode(@PathVariable Long id, @RequestBody DiscountCode discountCode) {
-        DiscountCode updated = discountCodeService.updateDiscountCode(id, discountCode);
-        return ResponseEntity.ok(updated);
+    public DiscountCode updateDiscountCode(@PathVariable Long id, @RequestBody DiscountCode discountCode) {
+        return discountCodeService.updateDiscountCode(id, discountCode);
     }
 
-    @Operation(summary = "Delete a discount code by ID")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDiscountCode(@PathVariable Long id) {
+    public void deleteDiscountCode(@PathVariable Long id) {
         discountCodeService.deleteDiscountCode(id);
-        return ResponseEntity.noContent().build();
     }
 }
