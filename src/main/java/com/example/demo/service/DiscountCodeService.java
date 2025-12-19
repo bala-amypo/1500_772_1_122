@@ -1,12 +1,3 @@
-package com.example.demo.service;
-
-import com.example.demo.model.DiscountCode;
-import com.example.demo.repository.DiscountCodeRepository;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-
 @Service
 public class DiscountCodeService {
 
@@ -16,19 +7,19 @@ public class DiscountCodeService {
         this.repository = repository;
     }
 
-    public DiscountCode create(DiscountCode discountCode) {
+    public DiscountCode createDiscountCode(DiscountCode discountCode) {
         return repository.save(discountCode);
     }
 
-    public List<DiscountCode> getAll() {
+    public List<DiscountCode> getAllDiscountCodes() {
         return repository.findAll();
     }
 
-    public Optional<DiscountCode> getById(Long id) {
+    public Optional<DiscountCode> getDiscountCodeById(Long id) {
         return repository.findById(id);
     }
 
-    public DiscountCode update(Long id, DiscountCode discountCode) {
+    public DiscountCode updateDiscountCode(Long id, DiscountCode discountCode) {
         return repository.findById(id).map(existing -> {
             existing.setCode(discountCode.getCode());
             existing.setInfluencer(discountCode.getInfluencer());
@@ -37,7 +28,7 @@ public class DiscountCodeService {
         }).orElseThrow(() -> new RuntimeException("DiscountCode not found"));
     }
 
-    public void delete(Long id) {
+    public void deleteDiscountCode(Long id) {
         repository.deleteById(id);
     }
 }
