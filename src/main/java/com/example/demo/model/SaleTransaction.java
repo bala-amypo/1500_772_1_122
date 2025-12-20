@@ -2,7 +2,7 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Entity
 public class SaleTransaction {
@@ -16,24 +16,26 @@ public class SaleTransaction {
     private DiscountCode discountCode;
 
     @Column(nullable = false)
-    private BigDecimal amount;
+    private BigDecimal saleAmount;
 
-    private LocalDateTime saleDate = LocalDateTime.now();
+    private Timestamp transactionDate;
 
-    // Getters & Setters
+    @PrePersist
+    public void onCreate() {
+        this.transactionDate = new Timestamp(System.currentTimeMillis());
+    }
+
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
     public DiscountCode getDiscountCode() { return discountCode; }
     public void setDiscountCode(DiscountCode discountCode) {
         this.discountCode = discountCode;
     }
 
-    public BigDecimal getAmount() { return amount; }
-    public void setAmount(BigDecimal amount) { this.amount = amount; }
-
-    public LocalDateTime getSaleDate() { return saleDate; }
-    public void setSaleDate(LocalDateTime saleDate) {
-        this.saleDate = saleDate;
+    public BigDecimal getSaleAmount() { return saleAmount; }
+    public void setSaleAmount(BigDecimal saleAmount) {
+        this.saleAmount = saleAmount;
     }
+
+    public Timestamp getTransactionDate() { return transactionDate; }
 }
