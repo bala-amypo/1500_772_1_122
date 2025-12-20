@@ -1,82 +1,52 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "sale_transactions")
 public class SaleTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "discount_code_id", nullable = false)
-    private DiscountCode discountCode;
+    private Long discountCodeId;  // Just store the ID, no relationship
 
-    @Column(nullable = false)
-    private BigDecimal transactionAmount;
-
-    private LocalDateTime transactionDate;
+    private Double transactionAmount;
 
     private Long customerId;
 
-    // ✅ No-arg constructor
-    public SaleTransaction() {
-    }
+    private LocalDate transactionDate = LocalDate.now(); // auto-set current date
 
-    // ✅ Parameterized constructor
-    public SaleTransaction(DiscountCode discountCode,
-                           BigDecimal transactionAmount,
-                           LocalDateTime transactionDate,
-                           Long customerId) {
-        this.discountCode = discountCode;
-        this.transactionAmount = transactionAmount;
-        this.transactionDate = transactionDate;
-        this.customerId = customerId;
-    }
-
-    // ✅ GETTERS & SETTERS (MANDATORY)
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
-    public DiscountCode getDiscountCode() {
-        return discountCode;
+    public Long getDiscountCodeId() {
+        return discountCodeId;
     }
-
-    public void setDiscountCode(DiscountCode discountCode) {
-        this.discountCode = discountCode;
+    public void setDiscountCodeId(Long discountCodeId) {
+        this.discountCodeId = discountCodeId;
     }
-
-    public BigDecimal getTransactionAmount() {
+    public Double getTransactionAmount() {
         return transactionAmount;
     }
-
-    public void setTransactionAmount(BigDecimal transactionAmount) {
+    public void setTransactionAmount(Double transactionAmount) {
         this.transactionAmount = transactionAmount;
     }
-
-    public LocalDateTime getTransactionDate() {
-        return transactionDate;
-    }
-
-    public void setTransactionDate(LocalDateTime transactionDate) {
-        this.transactionDate = transactionDate;
-    }
-
     public Long getCustomerId() {
         return customerId;
     }
-
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
+    }
+    public LocalDate getTransactionDate() {
+        return transactionDate;
+    }
+    public void setTransactionDate(LocalDate transactionDate) {
+        this.transactionDate = transactionDate;
     }
 }

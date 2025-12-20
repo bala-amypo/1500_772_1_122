@@ -1,15 +1,5 @@
-package com.example.demo.controller;
-
-import com.example.demo.model.SaleTransaction;
-import com.example.demo.service.SaleTransactionService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
 @RestController
-@RequestMapping("/sales")
-@Tag(name = "Sales Transactions")
+@RequestMapping("/saleTransactions")
 public class SaleTransactionController {
 
     private final SaleTransactionService service;
@@ -19,22 +9,27 @@ public class SaleTransactionController {
     }
 
     @PostMapping
-    public SaleTransaction create(@RequestBody SaleTransaction tx) {
-        return service.createSale(tx);
+    public SaleTransaction createTransaction(@RequestBody SaleTransaction transaction) {
+        return service.createTransaction(transaction);
     }
 
-    @GetMapping("/code/{discountCodeId}")
-    public List<SaleTransaction> byCode(@PathVariable Long discountCodeId) {
-        return service.getSalesForCode(discountCodeId);
+    @GetMapping
+    public List<SaleTransaction> getAllTransactions() {
+        return service.getAllTransactions();
     }
 
-    @GetMapping("/influencer/{influencerId}")
-    public List<SaleTransaction> byInfluencer(@PathVariable Long influencerId) {
-        return service.getSalesForInfluencer(influencerId);
+    @GetMapping("/{id}")
+    public SaleTransaction getTransaction(@PathVariable Long id) {
+        return service.getTransactionById(id).orElse(null);
     }
 
-    @GetMapping("/campaign/{campaignId}")
-    public List<SaleTransaction> byCampaign(@PathVariable Long campaignId) {
-        return service.getSalesForCampaign(campaignId);
+    @PutMapping("/{id}")
+    public SaleTransaction updateTransaction(@PathVariable Long id, @RequestBody SaleTransaction updated) {
+        return service.updateTransaction(id, updated);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteTransaction(@PathVariable Long id) {
+        service.deleteTransaction(id);
     }
 }
