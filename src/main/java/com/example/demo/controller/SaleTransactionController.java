@@ -1,3 +1,11 @@
+package com.example.demo.controller;
+
+import com.example.demo.model.SaleTransaction;
+import com.example.demo.service.SaleTransactionService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/saleTransactions")
 public class SaleTransactionController {
