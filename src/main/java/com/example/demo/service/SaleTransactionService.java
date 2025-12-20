@@ -1,34 +1,36 @@
 package com.example.demo.service;
 
+import com.example.demo.model.DiscountCode;
 import com.example.demo.model.SaleTransaction;
+import com.example.demo.repository.DiscountCodeRepository;
 import com.example.demo.repository.SaleTransactionRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class SaleTransactionService {
 
-    private final SaleTransactionRepository repository;
+    private final SaleTransactionRepository saleRepo;
+    private final DiscountCodeRepository codeRepo;
 
-    public SaleTransactionService(SaleTransactionRepository repository) {
-        this.repository = repository;
+    public SaleTransactionService(
+            SaleTransactionRepository saleRepo,
+            DiscountCodeRepository codeRepo) {
+        this.saleRepo = saleRepo;
+        this.codeRepo = codeRepo;
     }
 
     public SaleTransaction create(SaleTransaction saleTransaction) {
-        return repository.save(saleTransaction);
-    }
 
-    public List<SaleTransaction> getAll() {
-        return repository.findAll();
-    }
+        if (saleTransaction.getDiscountCode() == null ||
+            saleTransaction.getDiscountCode().getId() == null) {
+            throw new RuntimeException("DiscountCode ID is required");
+        }
 
-    public SaleTransaction getById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("SaleTransaction not found"));
-    }
+        DiscountCode code = codeRepo.findById(
+                saleTransaction.getDiscountCode().getId()
+        ).orElseThrow(() -> new RuntimeException("DiscountCode not found"));
 
-    public void delete(Long id) {
-        repository.deleteById(id);
+        saleTransaction.setDiscountCode(code);
+        return saleRepo.save(saleTransaction);
     }
 }
