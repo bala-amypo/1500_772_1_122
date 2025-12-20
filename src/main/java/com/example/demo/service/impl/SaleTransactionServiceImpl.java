@@ -5,7 +5,6 @@ import com.example.demo.repository.SaleTransactionRepository;
 import com.example.demo.service.SaleTransactionService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +19,6 @@ public class SaleTransactionServiceImpl implements SaleTransactionService {
 
     @Override
     public SaleTransaction createTransaction(SaleTransaction transaction) {
-        if (transaction.getTransactionDate() == null) {
-            transaction.setTransactionDate(LocalDate.now());
-        }
         return repository.save(transaction);
     }
 
@@ -38,13 +34,15 @@ public class SaleTransactionServiceImpl implements SaleTransactionService {
 
     @Override
     public SaleTransaction updateTransaction(Long id, SaleTransaction updated) {
-        return repository.findById(id).map(tx -> {
-            tx.setDiscountCodeId(updated.getDiscountCodeId());
-            tx.setTransactionAmount(updated.getTransactionAmount());
-            tx.setCustomerId(updated.getCustomerId());
-            tx.setTransactionDate(updated.getTransactionDate() != null ? updated.getTransactionDate() : LocalDate.now());
-            return repository.save(tx);
-        }).orElse(null);
+        return repository.findById(id)
+                .map(existing -> {
+                    existing.setDiscountCodeId(updated.getDiscountCodeId());
+                    existing.setTransactionAmount(updated.getTransactionAmount());
+                    existing.setCustomerId(updated.getCustomerId());
+                    existing.setTransactionDate(updated.getTransactionDate());
+                    return repository.save(existing);
+                })
+                .orElseThrow();
     }
 
     @Override
