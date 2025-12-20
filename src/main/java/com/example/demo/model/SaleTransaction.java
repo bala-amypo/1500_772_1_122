@@ -10,13 +10,13 @@ public class SaleTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long discountCodeId;  // flat field, no relationship
+    private Long discountCodeId; // just the ID, no nested object
 
     private Double transactionAmount;
 
     private Long customerId;
 
-    private LocalDate transactionDate = LocalDate.now(); // auto-fill current date
+    private LocalDate transactionDate = LocalDate.now(); // defaults to today if not provided
 
     // Getters and Setters
     public Long getId() { return id; }
