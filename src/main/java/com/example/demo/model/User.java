@@ -14,7 +14,6 @@ public class User {
     private String password;
     private String role; // e.g., ADMIN, USER
 
-    // Constructors
     public User() {}
     public User(String username, String email, String password, String role) {
         this.username = username;
@@ -23,7 +22,6 @@ public class User {
         this.role = role;
     }
 
-    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getUsername() { return username; }

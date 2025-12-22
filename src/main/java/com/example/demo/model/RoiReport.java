@@ -14,7 +14,7 @@ public class RoiReport {
     private Double roiValue;
     private LocalDate generatedDate;
 
-    // Constructors
+
     public RoiReport() {}
     public RoiReport(String reportName, Double roiValue, LocalDate generatedDate) {
         this.reportName = reportName;
@@ -22,7 +22,6 @@ public class RoiReport {
         this.generatedDate = generatedDate;
     }
 
-    // Getters & Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getReportName() { return reportName; }

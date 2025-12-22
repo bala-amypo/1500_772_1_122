@@ -18,7 +18,6 @@ public class SaleTransaction {
 
     private LocalDate transactionDate = LocalDate.now(); // defaults to today if not provided
 
-    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
