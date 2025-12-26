@@ -2,14 +2,14 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Influencer;
 import com.example.demo.service.InfluencerService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/influencers")
-@Tag(name = "Influencers")
+@RequestMapping("/influencers")
 public class InfluencerController {
 
     private final InfluencerService influencerService;
@@ -19,28 +19,18 @@ public class InfluencerController {
     }
 
     @PostMapping
-    public Influencer createInfluencer(@RequestBody Influencer influencer) {
-        return influencerService.createInfluencer(influencer);
-    }
-
-    @PutMapping("/{id}")
-    public Influencer updateInfluencer(@PathVariable Long id,
-                                       @RequestBody Influencer influencer) {
-        return influencerService.updateInfluencer(id, influencer);
+    public ResponseEntity<Influencer> createInfluencer(@RequestBody Influencer influencer) {
+        Influencer savedInfluencer = influencerService.createInfluencer(influencer);
+        return new ResponseEntity<>(savedInfluencer, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public Influencer getInfluencer(@PathVariable Long id) {
-        return influencerService.getInfluencerById(id);
+    public ResponseEntity<Influencer> getInfluencerById(@PathVariable Long id) {
+        return ResponseEntity.ok(influencerService.getInfluencerById(id));
     }
 
     @GetMapping
-    public List<Influencer> getAllInfluencers() {
-        return influencerService.getAllInfluencers();
-    }
-
-    @PutMapping("/{id}/deactivate")
-    public void deactivateInfluencer(@PathVariable Long id) {
-        influencerService.deactivateInfluencer(id);
+    public ResponseEntity<List<Influencer>> getAllInfluencers() {
+        return ResponseEntity.ok(influencerService.getAllInfluencers());
     }
 }
