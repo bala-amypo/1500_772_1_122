@@ -2,7 +2,6 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "campaigns")
@@ -21,18 +20,14 @@ public class Campaign {
     @Column(nullable = false)
     private LocalDate endDate;
 
-    @OneToMany(mappedBy = "campaign")
-    private List<DiscountCode> discountCodes;
-
-    public Campaign() {}
+    public Campaign() {
+    }
 
     public Campaign(String campaignName, LocalDate startDate, LocalDate endDate) {
         this.campaignName = campaignName;
         this.startDate = startDate;
         this.endDate = endDate;
     }
-
-    // Getters and setters
 
     public Long getId() {
         return id;
@@ -64,13 +59,5 @@ public class Campaign {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
-    }
-
-    public List<DiscountCode> getDiscountCodes() {
-        return discountCodes;
-    }
-
-    public void setDiscountCodes(List<DiscountCode> discountCodes) {
-        this.discountCodes = discountCodes;
     }
 }
