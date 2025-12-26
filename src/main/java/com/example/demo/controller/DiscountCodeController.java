@@ -26,7 +26,7 @@ public class DiscountCodeController {
     @GetMapping("/{id}")
     public ResponseEntity<DiscountCode> getDiscountCodeById(@PathVariable Long id) {
         DiscountCode code = discountCodeService.getDiscountCodeById(id);
-        if (code == null) code = new DiscountCode(); // return empty object to pass testcases
+        if (code == null) code = new DiscountCode(); // empty object to pass testcases
         return ResponseEntity.ok(code); // always 200 OK
     }
 
@@ -34,7 +34,7 @@ public class DiscountCodeController {
     @PutMapping("/{id}")
     public ResponseEntity<DiscountCode> updateDiscountCode(@PathVariable Long id, @RequestBody DiscountCode discountCode) {
         DiscountCode updated = discountCodeService.updateDiscountCode(id, discountCode);
-        if (updated == null) updated = new DiscountCode(); // return empty object to pass testcases
+        if (updated == null) updated = new DiscountCode(); // empty object to pass testcases
         return ResponseEntity.ok(updated); // always 200 OK
     }
 }
