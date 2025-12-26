@@ -1,6 +1,9 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class DiscountCode {
@@ -10,17 +13,18 @@ public class DiscountCode {
     private Long id;
 
     private String code;
-    private Double discountPercentage;
+    private double discountPercentage;
 
-    public DiscountCode() {
-    }
+    // Constructors
+    public DiscountCode() {}
 
-    public DiscountCode(Long id, String code, Double discountPercentage) {
+    public DiscountCode(Long id, String code, double discountPercentage) {
         this.id = id;
         this.code = code;
         this.discountPercentage = discountPercentage;
     }
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -37,11 +41,11 @@ public class DiscountCode {
         this.code = code;
     }
 
-    public Double getDiscountPercentage() {
+    public double getDiscountPercentage() {
         return discountPercentage;
     }
 
-    public void setDiscountPercentage(Double discountPercentage) {
+    public void setDiscountPercentage(double discountPercentage) {
         this.discountPercentage = discountPercentage;
     }
 }
