@@ -20,8 +20,7 @@ public class UserController {
     // GET all users
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users); // always 200 OK
+        return ResponseEntity.ok(userService.getAllUsers()); // always 200 OK
     }
 
     // GET user by ID
