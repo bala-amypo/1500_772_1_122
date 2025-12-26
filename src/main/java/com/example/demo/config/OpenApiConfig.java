@@ -19,7 +19,8 @@ public class OpenApiConfig {
                         .version("1.0")
                         .description("API for tracking influencer marketing campaign performance and ROI"))
                 .servers(List.of(
-                        new Server().url("https://9024.pro604cr.amypo.ai")
+                        new Server().url("https://9024.pro604cr.amypo.ai/swagger-ui/index.html
+")
                 ));
     }
 }
