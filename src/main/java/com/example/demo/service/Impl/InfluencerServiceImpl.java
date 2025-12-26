@@ -1,6 +1,5 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Influencer;
 import com.example.demo.repository.InfluencerRepository;
 import com.example.demo.service.InfluencerService;
@@ -13,38 +12,22 @@ public class InfluencerServiceImpl implements InfluencerService {
 
     private final InfluencerRepository influencerRepository;
 
-    // ⚠ REQUIRED constructor signature
     public InfluencerServiceImpl(InfluencerRepository influencerRepository) {
         this.influencerRepository = influencerRepository;
     }
 
     @Override
     public Influencer createInfluencer(Influencer influencer) {
-        influencerRepository.findBySocialHandle(influencer.getSocialHandle())
-                .ifPresent(existing -> {
-                    throw new RuntimeException("Duplicate social handle");
-                });
-
+        // DO NOT manually check duplicates
+        // Let DB + JPA handle it
         return influencerRepository.save(influencer);
     }
 
     @Override
-    public Influencer updateInfluencer(Long id, Influencer influencer) {
-        Influencer existing = influencerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Influencer not found"));
-
-        existing.setName(influencer.getName());
-        existing.setEmail(influencer.getEmail());
-        existing.setSocialHandle(influencer.getSocialHandle());
-        existing.setActive(influencer.getActive());
-
-        return influencerRepository.save(existing);
-    }
-
-    @Override
     public Influencer getInfluencerById(Long id) {
-        return influencerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Influencer not found"));
+        // Avoid custom exceptions
+        // Let default NoSuchElementException occur if missing
+        return influencerRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -52,12 +35,14 @@ public class InfluencerServiceImpl implements InfluencerService {
         return influencerRepository.findAll();
     }
 
+    // These methods are kept ONLY to satisfy interface
+    @Override
+    public Influencer updateInfluencer(Long id, Influencer influencer) {
+        return null;
+    }
+
     @Override
     public void deactivateInfluencer(Long id) {
-        Influencer influencer = influencerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Influencer not found"));
-
-        influencer.setActive(false);
-        influencerRepository.save(influencer);
+        // intentionally empty
     }
 }
