@@ -1,44 +1,37 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.sql.Timestamp;
+import jakarta.validation.constraints.NotBlank;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    name = "influencers",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "socialHandle")
-    }
-)
+@Table(name = "influencers")
 public class Influencer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @NotBlank
+    @Column(unique = true)
     private String socialHandle;
 
     private String email;
 
     private Boolean active = true;
 
-    private Timestamp createdAt;
+    private LocalDateTime createdAt;
 
     public Influencer() {
     }
 
-    public Influencer(String name, String socialHandle, boolean active) {
-        this.name = name;
-        this.socialHandle = socialHandle;
-        this.active = active;
-    }
-
     @PrePersist
     protected void onCreate() {
-        this.createdAt = new Timestamp(System.currentTimeMillis());
+        this.createdAt = LocalDateTime.now();
         if (this.active == null) {
             this.active = true;
         }
@@ -50,43 +43,43 @@ public class Influencer {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getSocialHandle() {
         return socialHandle;
     }
 
-    public void setSocialHandle(String socialHandle) {
-        this.socialHandle = socialHandle;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public Boolean getActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public Timestamp getCreatedAt() {
-        return createdAt;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSocialHandle(String socialHandle) {
+        this.socialHandle = socialHandle;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
