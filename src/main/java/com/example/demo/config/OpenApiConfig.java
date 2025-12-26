@@ -32,7 +32,7 @@ public class OpenApiConfig {
                                         .description("Enter JWT token")))
                 // Server for Swagger preview
                 .servers(List.of(
-                        new Server().url()
+                        new Server().url("https://9024.pro604cr.amypo.ai/")
                 ));
     }
 }
