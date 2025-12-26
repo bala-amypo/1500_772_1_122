@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    // No extra methods required for GET and PUT
+    User findByEmail(String email); // Required for CustomUserDetailsService
 }
