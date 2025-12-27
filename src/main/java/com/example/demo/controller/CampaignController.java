@@ -4,7 +4,6 @@ import com.example.demo.model.Campaign;
 import com.example.demo.service.CampaignService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -17,16 +16,9 @@ public class CampaignController {
         this.campaignService = campaignService;
     }
 
-    @PostMapping
-    public ResponseEntity<Campaign> createCampaign(@RequestBody Campaign campaign) {
-        return ResponseEntity.ok(campaignService.createCampaign(campaign));
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<Campaign> updateCampaign(
-            @PathVariable Long id,
-            @RequestBody Campaign campaign) {
-        return ResponseEntity.ok(campaignService.updateCampaign(id, campaign));
+    public ResponseEntity<Campaign> updateCampaign(@PathVariable Long id, @RequestBody Campaign c) {
+        return ResponseEntity.ok(campaignService.updateCampaign(id, c));
     }
 
     @GetMapping("/{id}")
@@ -39,5 +31,3 @@ public class CampaignController {
         return ResponseEntity.ok(campaignService.getAllCampaigns());
     }
 }
-
-
