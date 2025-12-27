@@ -1,10 +1,10 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.ROIReport;
+import com.example.demo.model.RoiReport;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
-@Repository
-public interface ROIReportRepository extends JpaRepository<ROIReport, Long> {
-    // No extra methods needed for testcases
+public interface RoiReportRepository extends JpaRepository<RoiReport, Long> {
+
+    List<RoiReport> findByDiscountCodeInfluencerId(Long influencerId);
 }
