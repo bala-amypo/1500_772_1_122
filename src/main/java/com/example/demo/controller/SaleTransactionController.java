@@ -1,38 +1,38 @@
-package com.example.demo.controller; // <-- package added
+package com.example.demo.controller;
 
 import com.example.demo.model.SaleTransaction;
 import com.example.demo.service.SaleTransactionService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/saletransactions")
-@Tag(name = "SaleTransaction", description = "APIs related to SaleTransaction") // Swagger heading
+@RequestMapping("/sales")
 public class SaleTransactionController {
 
-    @Autowired
-    private SaleTransactionService saleTransactionService;
+    private final SaleTransactionService service;
 
-    @GetMapping
-    public ResponseEntity<List<SaleTransaction>> getAllTransactions() {
-        return ResponseEntity.ok(saleTransactionService.getAllTransactions());
+    public SaleTransactionController(SaleTransactionService service) {
+        this.service = service;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<SaleTransaction> getTransactionById(@PathVariable Long id) {
-        SaleTransaction transaction = saleTransactionService.getTransactionById(id);
-        if (transaction == null) transaction = new SaleTransaction();
-        return ResponseEntity.ok(transaction);
+    @PostMapping
+    public ResponseEntity<SaleTransaction> createSale(@RequestBody SaleTransaction tx) {
+        return ResponseEntity.ok(service.createSale(tx));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<SaleTransaction> updateTransaction(@PathVariable Long id, @RequestBody SaleTransaction transaction) {
-        SaleTransaction updated = saleTransactionService.updateTransaction(id, transaction);
-        if (updated == null) updated = new SaleTransaction();
-        return ResponseEntity.ok(updated);
+    @GetMapping("/code/{id}")
+    public ResponseEntity<List<SaleTransaction>> getSalesForCode(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getSalesForCode(id));
+    }
+
+    @GetMapping("/influencer/{id}")
+    public ResponseEntity<List<SaleTransaction>> getSalesForInfluencer(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getSalesForInfluencer(id));
+    }
+
+    @GetMapping("/campaign/{id}")
+    public ResponseEntity<List<SaleTransaction>> getSalesForCampaign(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getSalesForCampaign(id));
     }
 }
