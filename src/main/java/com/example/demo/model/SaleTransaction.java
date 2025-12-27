@@ -1,9 +1,8 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
 @Entity
 public class SaleTransaction {
@@ -12,60 +11,24 @@ public class SaleTransaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String transactionId;
-    private String productName;
-    private int quantity;
-    private double totalPrice;
+    @ManyToOne
+    private DiscountCode discountCode;
 
-    // Constructors
+    private BigDecimal transactionAmount;
+    private Timestamp transactionDate;
+    private Long customerId;
+
     public SaleTransaction() {}
 
-    public SaleTransaction(Long id, String transactionId, String productName, int quantity, double totalPrice) {
-        this.id = id;
-        this.transactionId = transactionId;
-        this.productName = productName;
-        this.quantity = quantity;
-        this.totalPrice = totalPrice;
-    }
+    public Long getId() { return id; }
+    public DiscountCode getDiscountCode() { return discountCode; }
+    public BigDecimal getTransactionAmount() { return transactionAmount; }
+    public Timestamp getTransactionDate() { return transactionDate; }
+    public Long getCustomerId() { return customerId; }
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
-    }
+    public void setId(Long id) { this.id = id; }
+    public void setDiscountCode(DiscountCode discountCode) { this.discountCode = discountCode; }
+    public void setTransactionAmount(BigDecimal transactionAmount) { this.transactionAmount = transactionAmount; }
+    public void setTransactionDate(Timestamp transactionDate) { this.transactionDate = transactionDate; }
+    public void setCustomerId(Long customerId) { this.customerId = customerId; }
 }
