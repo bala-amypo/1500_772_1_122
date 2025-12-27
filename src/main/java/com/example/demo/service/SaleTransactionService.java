@@ -4,7 +4,12 @@ import com.example.demo.model.SaleTransaction;
 import java.util.List;
 
 public interface SaleTransactionService {
-    List<SaleTransaction> getAllTransactions();
-    SaleTransaction getTransactionById(Long id);
-    SaleTransaction updateTransaction(Long id, SaleTransaction transaction);
+
+    SaleTransaction createSale(SaleTransaction transaction);
+
+    List<SaleTransaction> getSalesForCode(Long discountCodeId);
+
+    List<SaleTransaction> getSalesForInfluencer(Long influencerId);
+
+    List<SaleTransaction> getSalesForCampaign(Long campaignId);
 }
