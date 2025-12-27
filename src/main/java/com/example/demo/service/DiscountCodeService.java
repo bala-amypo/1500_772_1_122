@@ -4,7 +4,7 @@ import com.example.demo.model.*;
 import java.util.List;
 
 public interface DiscountCodeService {
-    DiscountCode create(Influencer influencer);
-    List<Influencer> getAllInfluencers();
-    Influencer getInfluencerById(Long id);
+    DiscountCode createDiscountCode(DiscountCode discountCode);
+    List<DiscountCode> getAllDiscountCodes();
+    DiscountCode getDiscountCodeById(Long id);
 }
