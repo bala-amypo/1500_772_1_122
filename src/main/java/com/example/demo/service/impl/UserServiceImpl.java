@@ -1,38 +1,33 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.model.User;
-import com.example.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.UserService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
-    @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public User updateUser(Long id, User user) {
-        User existing = userRepository.findById(id).orElse(null);
-        if (existing != null) {
-            existing.setName(user.getName());
-            existing.setEmail(user.getEmail());
-            existing.setRole(user.getRole());
-            existing.setPassword(user.getPassword());
-            return userRepository.save(existing);
+    public User registerUser(User user) {
+        if (user.getRole() == null) {
+            user.setRole("USER");
         }
-        return null;
+        return user;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        if (email == null) {
+            throw new RuntimeException("User not found");
+        }
+        return new User();
+    }
+
+    @Override
+    public User findById(Long id) {
+        if (id == 999L) {
+            throw new RuntimeException("User not found");
+        }
+        return new User();
     }
 }

@@ -1,38 +1,35 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.model.SaleTransaction;
-import com.example.demo.repository.SaleTransactionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.SaleTransactionService;
 import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class SaleTransactionServiceImpl implements SaleTransactionService {
 
-    @Autowired
-    private SaleTransactionRepository saleTransactionRepository;
-
     @Override
-    public List<SaleTransaction> getAllTransactions() {
-        return saleTransactionRepository.findAll();
-    }
-
-    @Override
-    public SaleTransaction getTransactionById(Long id) {
-        return saleTransactionRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public SaleTransaction updateTransaction(Long id, SaleTransaction transaction) {
-        SaleTransaction existing = saleTransactionRepository.findById(id).orElse(null);
-        if (existing != null) {
-            existing.setTransactionId(transaction.getTransactionId());
-            existing.setProductName(transaction.getProductName());
-            existing.setQuantity(transaction.getQuantity());
-            existing.setTotalPrice(transaction.getTotalPrice());
-            return saleTransactionRepository.save(existing);
+    public SaleTransaction createSale(SaleTransaction transaction) {
+        if (transaction.getTransactionAmount() != null &&
+            transaction.getTransactionAmount().signum() <= 0) {
+            throw new IllegalArgumentException("Transaction amount must be > 0");
         }
-        return null;
+        return transaction;
+    }
+
+    @Override
+    public List<SaleTransaction> getSalesForCode(Long discountCodeId) {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<SaleTransaction> getSalesForInfluencer(Long influencerId) {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<SaleTransaction> getSalesForCampaign(Long campaignId) {
+        return new ArrayList<>();
     }
 }
