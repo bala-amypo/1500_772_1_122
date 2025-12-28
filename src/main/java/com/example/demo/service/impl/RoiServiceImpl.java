@@ -1,29 +1,42 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.RoiReport;
+import com.example.demo.repository.RoiReportRepository;
 import com.example.demo.service.RoiService;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Service
 public class RoiServiceImpl implements RoiService {
 
-    @Override
-    public RoiReport generateReportForCode(Long discountCodeId) {
-        return new RoiReport();
-    }
+    private final RoiReportRepository roiReportRepository;
 
-    @Override
-    public RoiReport getReportById(Long reportId) {
-        if (reportId == 999L) {
-            throw new RuntimeException("ROI report not found");
-        }
-        return new RoiReport();
+    public RoiServiceImpl(RoiReportRepository roiReportRepository) {
+        this.roiReportRepository = roiReportRepository;
     }
 
     @Override
     public List<RoiReport> getReportsForInfluencer(Long influencerId) {
-        return new ArrayList<>();
+        return roiReportRepository.findByInfluencer_Id(influencerId);
     }
+
+    @Override
+    public List<RoiReport> getReportsForCampaign(Long campaignId) {
+        return roiReportRepository.findByCampaign_Id(campaignId);
+    }
+    @Override
+    public RoiReport generateRoiForCode(Long codeId) {
+        RoiReport report = new RoiReport();
+        report.setCodeId(codeId);
+        return roiReportRepository.save(report);
+    }
+    @Override
+public RoiReport saveRoiReport(RoiReport roiReport) {
+    // Simply save whatever comes in the request body
+    return roiReportRepository.save(roiReport);
 }
+
+}
+
+
