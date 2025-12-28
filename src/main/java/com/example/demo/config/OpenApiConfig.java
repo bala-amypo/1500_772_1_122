@@ -16,7 +16,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .servers(List.of(
                         new Server()
-                                .url("https://9036.32procr.amypo.ai/")
+                                .url("https://9024.pro604cr.amypo.ai/login")
                                 .description("Production Server")
                 ))
                 .info(new Info()
