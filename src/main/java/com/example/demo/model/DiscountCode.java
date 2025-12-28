@@ -9,8 +9,12 @@ public class DiscountCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String codeValue;
+
     private Double discountPercentage;
+
+    private boolean active = true;
 
     @ManyToOne
     private Influencer influencer;
@@ -18,22 +22,23 @@ public class DiscountCode {
     @ManyToOne
     private Campaign campaign;
 
-    public DiscountCode() {}
-
-    public DiscountCode(String codeValue, Double discountPercentage) {
-        this.codeValue = codeValue;
-        this.discountPercentage = discountPercentage;
-    }
-
     public Long getId() { return id; }
-    public String getCodeValue() { return codeValue; }
-    public Double getDiscountPercentage() { return discountPercentage; }
-    public Influencer getInfluencer() { return influencer; }
-    public Campaign getCampaign() { return campaign; }
-
     public void setId(Long id) { this.id = id; }
+
+    public String getCodeValue() { return codeValue; }
     public void setCodeValue(String codeValue) { this.codeValue = codeValue; }
+
+    public Double getDiscountPercentage() { return discountPercentage; }
     public void setDiscountPercentage(Double discountPercentage) { this.discountPercentage = discountPercentage; }
+
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
+
+    public Influencer getInfluencer() { return influencer; }
     public void setInfluencer(Influencer influencer) { this.influencer = influencer; }
+
+    public Campaign getCampaign() { return campaign; }
     public void setCampaign(Campaign campaign) { this.campaign = campaign; }
 }
+
+
